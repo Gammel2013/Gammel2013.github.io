@@ -9,6 +9,12 @@
     {% endblock %}
 </head>
 <body>
+    <h1>Simple Idle Game</h1>
+    <div id="navigation">
+        {% for tab in tabs %}
+            <button class="tab-link" data-target="tab{{ loop.index }}">{{ tab.name }}</button>
+        {% endfor %}
+    </div>
     <div id="content">{% block content %}Default content{% endblock %}</div>
     <div id="footer">
         {% block footer %}Default footer{% endblock %}

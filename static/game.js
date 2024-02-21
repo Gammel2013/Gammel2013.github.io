@@ -14,7 +14,23 @@ function handleClick() {
   updatePoints(); // Update points on the page
 }
 
-// Event listener for button click
+function handleTabClick() {
+  var targetTabId = $(this).data('target');
+
+  // Hide all tabs
+  $('.tab').hide();
+
+  // Show the target tab
+  $('#' + targetTabId).show();
+}
+
+
 $( document ).ready(function() {
+  $('.tab').not(':first').hide();
+
+  // Event listener for button click
   $('#click-button').on('click', handleClick);
+
+  // Handle tab click
+  $('.tab-link').on('click', handleTabClick);
 });
