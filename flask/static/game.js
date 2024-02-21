@@ -4,6 +4,7 @@ let points = 0;
 
 // Function to update points on the page
 function updatePoints() {
+  console.log("Updating points!")
   document.getElementById('points').textContent = points;
 }
 
@@ -14,4 +15,6 @@ function handleClick() {
 }
 
 // Event listener for button click
-document.getElementById('click-button').addEventListener('click', handleClick);
+$( document ).ready(function() {
+  $('#click-button').on('click', handleClick);
+});
