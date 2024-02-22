@@ -29,8 +29,10 @@ $( document ).ready(function() {
   $('.tab').not(':first').hide();
 
   // Event listener for button click
-  $('#click-button').on('click', handleClick);
+  $('#button_click').on('click', handleClick);
 
   // Handle tab click
   $('.tab-link').on('click', handleTabClick);
 });
+
+// localStorage.setItem("save",JSON.stringify(g));
