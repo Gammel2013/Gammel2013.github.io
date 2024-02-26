@@ -41,10 +41,12 @@ function handleTabClick() {
 }
 
 function gameLoop() {
-  if (points > generator1price) {
+  if (points >= generator1price) {
     $('#button_pointGen1').addClass('buyableGenerator');
+    $('#button_pointGen1').removeClass('notBuyableGenerator');
   } else {
     $('#button_pointGen1').removeClass('buyableGenerator');
+    $('#button_pointGen1').addClass('notBuyableGenerator');
   }
 
   points += generator1 * generator1production * msPerTick / 1000;

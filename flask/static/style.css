@@ -31,3 +31,11 @@ button {
     border: 1px solid black;
     overflow: hidden; /* if you don't want #second to wrap below #first */
 }
+
+.buyableGenerator {
+  background-color: #cccccc;
+}
+
+.notBuyableGenerator {
+  background-color: #999999;
+}
