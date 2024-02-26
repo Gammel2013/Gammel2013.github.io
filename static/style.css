@@ -1,22 +1,41 @@
 body {
-    font-family: Arial, sans-serif;
-    text-align: center;
-  }
+  font-family: Arial, sans-serif;
+  text-align: center;
+}
   
-  #game-container {
-    margin: 50px auto;
-    padding: 20px;
-    border: 2px solid #ccc;
-    border-radius: 10px;
-    max-width: 400px;
-  }
+#game-container {
+  margin: 50px auto;
+  padding: 20px;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  max-width: 400px;
+}
   
-  button {
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-  }
+button {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  overflow: hidden;
+}
   
-  #points {
-    font-weight: bold;
-  }
+#points {
+  font-weight: bold;
+}
+
+.button_label {
+    float:left; /* add this */
+    border: 1px solid black;
+}
+
+.button_amount {
+    border: 1px solid black;
+    overflow: hidden; /* if you don't want #second to wrap below #first */
+}
+
+.buyableGenerator {
+  background-color: #cccccc;
+}
+
+.notBuyableGenerator {
+  background-color: #999999;
+}
