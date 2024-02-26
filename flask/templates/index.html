@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+{% block title %}Index{% endblock %}
+{% block head %}
+    {{ super() }}
+    <!-- Additional head content here -->
+{% endblock %}
+{% block content %}
+<div id="game-container">
+  {% for tab in tabs %}
+    <div class="tab" id="tab{{ loop.index }}">
+      {% include tab.path %}
+    </div>
+  {% endfor %}
+</div>
+{% endblock %}
