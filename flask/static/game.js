@@ -9,7 +9,11 @@ let msPerTick = 66;
 
 // Function to update points on the page
 function updatePoints() {
-  document.getElementById('points').textContent = points.toFixed(2);
+  $('#points').text(points.toFixed(2));
+}
+
+function updateGeneratorLabels() {
+  $('#button_pointGen1_amount').text('(' + generator1 + ')');
 }
 
 // Function to handle button click event
@@ -23,6 +27,7 @@ function buyGenerator1() {
     generator1price *= 1.2;
     generator1 += 1;
   }
+  updateGeneratorLabels();
 }
 
 function handleTabClick() {
@@ -51,6 +56,7 @@ $( document ).ready(function() {
 
   // Event listener for button click
   $('#button_click').on('click', pointClick);
+  $('#button_click_amount').hide();
 
   $('#button_pointGen1').on('click', buyGenerator1)
 

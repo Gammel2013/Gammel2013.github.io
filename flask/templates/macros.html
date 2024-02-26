@@ -1,3 +1,10 @@
 {% macro button(id, label) -%}
-<button id="button_{{ id }}">{{ label }}</button>
+<button id="button_{{ id }}">
+    <div id="button_{{ id }}_label" class="button_label">
+        {{ label }}
+    </div>
+    <div id="button_{{ id }}_amount" class="button_amount">
+        (0)
+    </div>
+</button>
 {%- endmacro %}
