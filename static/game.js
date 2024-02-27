@@ -7,13 +7,16 @@ let generator1price = 10;
 
 let msPerTick = 66;
 
+const select = document.querySelector.bind(document);
+const selectAll = document.querySelectorAll.bind(document);
+
 // Function to update points on the page
 function updatePoints() {
-  $('#points').text(points.toFixed(2));
+  select('#points').textContent = points.toFixed(2);
 }
 
 function updateGeneratorLabels() {
-  $('#button_pointGen1_amount').text('(' + generator1 + ')');
+  select('#button_pointGen1_amount').textContent = '(' + generator1 + ')';
 }
 
 // Function to handle button click event
@@ -31,39 +34,47 @@ function buyGenerator1() {
 }
 
 function handleTabClick() {
-  var targetTabId = $(this).data('target');
+  var targetTabId = this.getAttribute('data-target');
 
   // Hide all tabs
-  $('.tab').hide();
-
+  selectAll('.tab').forEach(function(el) {
+    el.style.display = 'none';
+  });
   // Show the target tab
-  $('#' + targetTabId).show();
+  select('#' + targetTabId).style.display = '';
 }
 
 function gameLoop() {
   if (points >= generator1price) {
-    $('#button_pointGen1').addClass('buyableGenerator');
-    $('#button_pointGen1').removeClass('notBuyableGenerator');
+    select('#button_pointGen1').classList.add('buyableGenerator');
+    select('#button_pointGen1').classList.remove('notBuyableGenerator');
   } else {
-    $('#button_pointGen1').removeClass('buyableGenerator');
-    $('#button_pointGen1').addClass('notBuyableGenerator');
+    select('#button_pointGen1').classList.remove('buyableGenerator');
+    select('#button_pointGen1').classList.add('notBuyableGenerator');
   }
 
   points += generator1 * generator1production * msPerTick / 1000;
   updatePoints(); // Update points on the page
 }
 
-$( document ).ready(function() {
-  $('.tab').not(':first').hide();
+document.addEventListener('DOMContentLoaded', function() {
+  // hide all tabs except the default one
+  selectAll('.tab').forEach(function(el) {
+    el.style.display = 'none';
+  });
+  select('.tab').style.display = '';
 
   // Event listener for button click
-  $('#button_click').on('click', pointClick);
-  $('#button_click_amount').hide();
+  select('#button_click').addEventListener('click', pointClick);
+  select('#button_click_amount').style.display = 'none';
 
-  $('#button_pointGen1').on('click', buyGenerator1)
+  select('#button_pointGen1').addEventListener('click', buyGenerator1);
 
   // Handle tab click
-  $('.tab-link').on('click', handleTabClick);
+  selectAll('.tab-link').forEach(function(el) {
+    el.addEventListener('click', handleTabClick);
+  });
+  //select('.tab-link').addEventListener('click', handleTabClick);
 
   setInterval(gameLoop, msPerTick);
 });
