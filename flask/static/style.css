@@ -23,13 +23,11 @@ button {
 }
 
 .button_label {
-    float:left; /* add this */
-    border: 1px solid black;
+    float:left;
 }
 
 .button_amount {
-    border: 1px solid black;
-    overflow: hidden; /* if you don't want #second to wrap below #first */
+    overflow: hidden;
 }
 
 .buyableGenerator {

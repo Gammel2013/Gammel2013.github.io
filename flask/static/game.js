@@ -1,9 +1,13 @@
 // JavaScript for the game logic
 
 let points = 0;
-let generator1 = 0;
-let generator1production = 1;
-let generator1price = 10;
+
+let generator1 = {
+  count: 0,
+  production: 1,
+  production_type: 'points',
+  price: 10 
+}
 
 let msPerTick = 66;
 
@@ -16,7 +20,8 @@ function updatePoints() {
 }
 
 function updateGeneratorLabels() {
-  select('#button_pointGen1_amount').textContent = '(' + generator1 + ')';
+  select('#button_pointGen1_amount').textContent = generator1.count;
+  select('#button_pointGen1_cost').textContent = generator1.price.toFixed(2);
 }
 
 // Function to handle button click event
@@ -25,10 +30,10 @@ function pointClick() {
 }
 
 function buyGenerator1() {
-  if (points >= generator1price) {
-    points -= generator1price;
-    generator1price *= 1.2;
-    generator1 += 1;
+  if (points >= generator1.price) {
+    points -= generator1.price;
+    generator1.price *= 1.2;
+    generator1.count += 1;
   }
   updateGeneratorLabels();
 }
@@ -45,7 +50,7 @@ function handleTabClick() {
 }
 
 function gameLoop() {
-  if (points >= generator1price) {
+  if (points >= generator1.price) {
     select('#button_pointGen1').classList.add('buyableGenerator');
     select('#button_pointGen1').classList.remove('notBuyableGenerator');
   } else {
@@ -53,7 +58,7 @@ function gameLoop() {
     select('#button_pointGen1').classList.add('notBuyableGenerator');
   }
 
-  points += generator1 * generator1production * msPerTick / 1000;
+  points += generator1.count * generator1.production * msPerTick / 1000;
   updatePoints(); // Update points on the page
 }
 
@@ -66,7 +71,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Event listener for button click
   select('#button_click').addEventListener('click', pointClick);
-  select('#button_click_amount').style.display = 'none';
+  select('#button_click .button_amount').style.display = 'none';
+  select('#button_click .button_cost').style.display = 'none';
 
   select('#button_pointGen1').addEventListener('click', buyGenerator1);
 
@@ -76,6 +82,9 @@ document.addEventListener('DOMContentLoaded', function() {
   });
   //select('.tab-link').addEventListener('click', handleTabClick);
 
+
+  updateGeneratorLabels();
+  updatePoints();
   setInterval(gameLoop, msPerTick);
 });
 // localStorage.setItem("save",JSON.stringify(g));
