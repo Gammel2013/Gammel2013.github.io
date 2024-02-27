@@ -3,7 +3,6 @@ import glob
 from pathlib import Path
 
 app = Flask(__name__)
-app.config['FREEZER_DESTINATION'] = '../'
 
 @app.route('/')
 def root():
