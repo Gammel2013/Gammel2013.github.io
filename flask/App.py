@@ -10,7 +10,7 @@ def root():
     tabs = [
         {
             'name': 'Basic',
-            'path': 'tabs/test_tab.html',
+            'path': 'tabs/tab_basic.html',
         },
         {
             'name': 'Meow :3',
