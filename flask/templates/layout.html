@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
     {% block head %}
-    <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
     <script src="{{ url_for('static', filename='game.js') }}"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
     <title>{% block title %}Default title{% endblock %}</title>
