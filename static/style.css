@@ -12,24 +12,48 @@ body {
 }
   
 button {
-  padding: 10px 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
   font-size: 16px;
   cursor: pointer;
   overflow: hidden;
+  display: inline-block;
+  position: relative;
+  min-height: 1.8cm;
 }
-  
+
+.button_generator {
+  padding-bottom: 20px;
+}
+
 #points {
   font-weight: bold;
 }
 
 .button_label {
-    float:left; /* add this */
-    border: 1px solid black;
+    float:left;
 }
 
 .button_amount {
-    border: 1px solid black;
-    overflow: hidden; /* if you don't want #second to wrap below #first */
+    overflow: hidden;
+}
+
+.button_production {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  padding: 5px;
+  font-size: small;
+}
+
+.button_cost {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  padding: 5px;
+  font-size: small;
 }
 
 .buyableGenerator {
