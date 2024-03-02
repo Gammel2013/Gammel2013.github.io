@@ -1,5 +1,6 @@
 {% import 'macros.html' as macros %}
 <p>Click the button to earn points:</p>
-{{ macros.button('click', 'Click me!')}}
+<button id="button_click"> Click me! </button>
 <p>Points: <span id="points">0</span></p>
-{{ macros.button('pointGen1', 'Buy point generator tier 1')}}
+{{ macros.button_generator('pointGen1', 'Buy point generator tier 1')}}
+{{ macros.button_generator('pointGen2', 'Buy point generator tier 2')}}

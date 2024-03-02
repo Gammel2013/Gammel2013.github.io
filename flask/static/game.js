@@ -2,40 +2,89 @@
 
 let points = 0;
 
-let generator1 = {
-  count: 0,
-  production: 1,
-  production_type: 'points',
-  price: 10 
+let last_tick = performance.now();
+let elapsed_ms_this_tick = 0;
+
+
+function PGenerator(name, production, production_type, price, scaling) {
+  this.count = 0;
+  this.name = name;
+  this.production = production;
+  this.production_type = production_type;
+  this.price = price;
+  this.scaling = scaling;
 }
 
-let msPerTick = 66;
+const generatorList = [
+  new PGenerator(
+    'pointGen1',
+    1,
+    'points',
+    10,
+    1.2
+  ),
+  new PGenerator(
+    'pointGen2',
+    1,
+    'pointGen1',
+    500,
+    1.5
+  ),
+]
 
+const msPerTick = 66;
+
+//Helper functions
 const select = document.querySelector.bind(document);
 const selectAll = document.querySelectorAll.bind(document);
 
-// Function to update points on the page
+function getGenerator(target_name) {
+  return generatorList.find(item => item.name === target_name);
+}
+
+function init_window(){
+  // hide all tabs except the default one
+  selectAll('.tab').forEach(function(el) {
+    el.style.display = 'none';
+  });
+  select('.tab').style.display = '';
+
+  // setup event listeners
+  // Event listener for button click
+  select('#button_click').addEventListener('click', pointClick);
+
+  for (let generator of generatorList) {
+    id = '#button_' + generator.name;
+    let el = select(id);
+    el.addEventListener('click', buyGenerator);
+  }
+
+  // Handle tab click
+  selectAll('.tab-link').forEach(function(el) {
+    el.addEventListener('click', handleTabClick);
+  });
+
+  // Misc stuff
+  updateGeneratorLabels();
+  updatePoints();
+}
+
+// Functions for updating labels
 function updatePoints() {
   select('#points').textContent = points.toFixed(2);
 }
 
 function updateGeneratorLabels() {
-  select('#button_pointGen1_amount').textContent = generator1.count;
-  select('#button_pointGen1_cost').textContent = generator1.price.toFixed(2);
+  for (let generator of generatorList) {
+    id = '#button_' + generator.name;
+    select(id + '_amount').textContent = Math.trunc(generator.count);
+    select(id + '_cost').textContent = generator.price.toFixed(2);
+  }
 }
 
-// Function to handle button click event
+// Functions for handling clicks
 function pointClick() {
   points += 1; // Increase points by 1 on each click
-}
-
-function buyGenerator1() {
-  if (points >= generator1.price) {
-    points -= generator1.price;
-    generator1.price *= 1.2;
-    generator1.count += 1;
-  }
-  updateGeneratorLabels();
 }
 
 function handleTabClick() {
@@ -49,42 +98,62 @@ function handleTabClick() {
   select('#' + targetTabId).style.display = '';
 }
 
-function gameLoop() {
-  if (points >= generator1.price) {
-    select('#button_pointGen1').classList.add('buyableGenerator');
-    select('#button_pointGen1').classList.remove('notBuyableGenerator');
-  } else {
-    select('#button_pointGen1').classList.remove('buyableGenerator');
-    select('#button_pointGen1').classList.add('notBuyableGenerator');
+// Functions for the actual game logic
+function buyGenerator(event) {
+  // get matching generator from button attributes
+  let target_name = event.currentTarget.getAttribute('data-name');
+  let target_generator = getGenerator(target_name);
+  
+  if (points >= target_generator.price) {
+    points -= target_generator.price;
+    target_generator.price *= target_generator.scaling;
+    target_generator.count += 1;
   }
-
-  points += generator1.count * generator1.production * msPerTick / 1000;
-  updatePoints(); // Update points on the page
+  updateGeneratorLabels();
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-  // hide all tabs except the default one
-  selectAll('.tab').forEach(function(el) {
-    el.style.display = 'none';
-  });
-  select('.tab').style.display = '';
+function productionTick() {
+  for (let generator of generatorList) {
+    let production_this_tick = generator.count * generator.production * elapsed_ms_this_tick / 1000;
 
-  // Event listener for button click
-  select('#button_click').addEventListener('click', pointClick);
-  select('#button_click .button_amount').style.display = 'none';
-  select('#button_click .button_cost').style.display = 'none';
+    if (generator.production_type === 'points') {
+      points += production_this_tick;
+    } else if (generator.production_type.startsWith('pointGen')) {
+      let target_gen = getGenerator(generator.production_type);
+      target_gen.count += production_this_tick;
+    }
+  }
+}
 
-  select('#button_pointGen1').addEventListener('click', buyGenerator1);
+function gameLoop() {
+  let start_of_tick = performance.now();
+  elapsed_ms_this_tick = start_of_tick - last_tick;
+  last_tick = start_of_tick
+  // update buttons for styling
+  for (let generator of generatorList) {
+    id = '#button_' + generator.name;
+    let el = select(id);
+    if (points >= generator.price) {
+      el.classList.add('buyableGenerator');
+      el.classList.remove('notBuyableGenerator');
+    } else {
+      el.classList.remove('buyableGenerator');
+      el.classList.add('notBuyableGenerator');
+    }
+  }
 
-  // Handle tab click
-  selectAll('.tab-link').forEach(function(el) {
-    el.addEventListener('click', handleTabClick);
-  });
-  //select('.tab-link').addEventListener('click', handleTabClick);
+  productionTick();
 
-
+  updatePoints(); // Update points on the page
   updateGeneratorLabels();
-  updatePoints();
+
+  let end_of_tick = performance.now();
+  select('#elapsed_tick_time').textContent = end_of_tick - start_of_tick;
+}
+
+// Logic when the game is loaded
+document.addEventListener('DOMContentLoaded', function() {
+  init_window();
   setInterval(gameLoop, msPerTick);
 });
 // localStorage.setItem("save",JSON.stringify(g));

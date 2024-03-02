@@ -1,5 +1,5 @@
-{% macro button(id, label) -%}
-<button id="button_{{ id }}">
+{% macro button_generator(id, label) -%}
+<button id="button_{{ id }}" class="button_generator" data-name="{{ id }}">
     <div id="button_{{ id }}_label" class="button_label">
         {{ label }}&nbsp;
     </div>
